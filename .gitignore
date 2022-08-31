@@ -57,3 +57,6 @@ amplifytools.xcconfig
 
 # https://github.com/aws-amplify/amplify-cli/issues/1779
 team-provider-info.json
+
+# For Amplify backend (python).
+*.egg-info/

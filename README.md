@@ -22,6 +22,88 @@ If necessary.
 % amplify init
 ```
 
+### add function
+
+```
+% amplify add function
+? Select which capability you want to add: Lambda function (serverless function)
+? Provide an AWS Lambda function name: ApiBackend
+? Choose the runtime that you want to use: Python
+Only one template found - using Hello World by default.
+
+Available advanced settings:
+- Resource access permissions
+- Scheduled recurring invocation
+- Lambda layers configuration
+- Environment variables configuration
+- Secret values configuration
+
+? Do you want to configure advanced settings? No
+? Do you want to edit the local lambda function now? No
+Successfully added resource ApiBackend locally.
+
+Next steps:
+Check out sample function code generated in <project-dir>/amplify/backend/function/ApiBackend/src
+"amplify function build" builds all of your functions currently in the project
+"amplify mock function <functionName>" runs your function locally
+To access AWS resources outside of this Amplify app, edit the <project-dir>/amplify/backend/function/ApiBackend/custom-policies.json
+"amplify push" builds all of your local backend resources and provisions them in the cloud
+"amplify publish" builds all of your local backend and front-end resources (if you added hosting category) and provisions them in the cloud
+```
+
+```
+% amplify status
+
+    Current Environment: dev
+
+┌──────────┬───────────────┬───────────┬───────────────────┐
+│ Category │ Resource name │ Operation │ Provider plugin   │
+├──────────┼───────────────┼───────────┼───────────────────┤
+│ Function │ ApiBackend    │ Create    │ awscloudformation │
+└──────────┴───────────────┴───────────┴───────────────────┘
+```
+
+```
+% cd amplify/backend/function/ApiBackend/
+% pipenv install uvicorn fastapi mangum pydantic
+```
+
+Edit `src/index.py`.
+
+Start API.
+
+```
+% pipenv run uvicorn --reload index:app
+```
+
+Request Example.
+
+```
+% curl -X POST -H "Content-Type: application/json" -d '{"name": "example"}' http://127.0.0.1:8000/api/name
+```
+
+Once `amplify push`.
+
+```
+% amplify push
+```
+
+A Lambda function is created.
+
+```
+% amplify status
+
+    Current Environment: dev
+
+┌──────────┬───────────────┬───────────┬───────────────────┐
+│ Category │ Resource name │ Operation │ Provider plugin   │
+├──────────┼───────────────┼───────────┼───────────────────┤
+│ Function │ ApiBackend    │ No Change │ awscloudformation │
+└──────────┴───────────────┴───────────┴───────────────────┘
+```
+
+(Also, `aws-exports.js` is created.)
+
 # Next.js
 
 ```

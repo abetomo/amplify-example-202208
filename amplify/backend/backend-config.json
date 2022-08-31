@@ -1,1 +1,9 @@
-{}
+{
+  "function": {
+    "ApiBackend": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  }
+}
