@@ -104,6 +104,68 @@ A Lambda function is created.
 
 (Also, `aws-exports.js` is created.)
 
+### add api
+
+```
+% amplify add api
+? Select from one of the below mentioned services: REST
+✔ Provide a friendly name for your resource to be used as a label for this category in the project: · Api
+✔ Provide a path (e.g., /book/{isbn}): · /api
+✔ Choose a Lambda source · Use a Lambda function already added in the current Amplify project
+Only one option for [Choose the Lambda function to invoke by this path]. Selecting [ApiBackend].
+✔ Restrict API access? (Y/n) · yes
+✔ Who should have access? · Authenticated and Guest users
+✔ What permissions do you want to grant to Authenticated users? · create, read, update, delete
+✔ What permissions do you want to grant to Guest users? · create, read, update, delete
+✅ Successfully added auth resource locally.
+✔ Do you want to add another path? (y/N) · no
+✅ Successfully added resource Api locally
+
+✅ Some next steps:
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+```
+
+```
+% amplify status
+
+    Current Environment: dev
+
+┌──────────┬────────────────┬───────────┬───────────────────┐
+│ Category │ Resource name  │ Operation │ Provider plugin   │
+├──────────┼────────────────┼───────────┼───────────────────┤
+│ Auth     │ amplifyexample │ Create    │ awscloudformation │
+├──────────┼────────────────┼───────────┼───────────────────┤
+│ Api      │ Api            │ Create    │ awscloudformation │
+├──────────┼────────────────┼───────────┼───────────────────┤
+│ Function │ ApiBackend     │ No Change │ awscloudformation │
+└──────────┴────────────────┴───────────┴───────────────────┘
+```
+
+"`Restrict API access? (Y/n) · yes`", so the Auth is also created.
+
+```
+% amplify push
+```
+
+```
+% amplify status
+
+    Current Environment: dev
+
+┌──────────┬────────────────┬───────────┬───────────────────┐
+│ Category │ Resource name  │ Operation │ Provider plugin   │
+├──────────┼────────────────┼───────────┼───────────────────┤
+│ Function │ ApiBackend     │ No Change │ awscloudformation │
+├──────────┼────────────────┼───────────┼───────────────────┤
+│ Auth     │ amplifyexample │ No Change │ awscloudformation │
+├──────────┼────────────────┼───────────┼───────────────────┤
+│ Api      │ Api            │ No Change │ awscloudformation │
+└──────────┴────────────────┴───────────┴───────────────────┘
+
+REST API endpoint: https://<xxx>.execute-api.<region>.amazonaws.com/dev
+```
+
 # Next.js
 
 ```
