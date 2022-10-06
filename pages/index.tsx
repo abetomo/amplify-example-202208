@@ -3,7 +3,31 @@ import Head from 'next/head'
 // import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+import { Amplify, API, withSSRContext } from 'aws-amplify'
+import awsExports from '../aws-exports'
+
+Amplify.configure(awsExports)
+
+export async function getStaticProps() {
+  const SSR = withSSRContext()
+  const res = await SSR.API.post(
+    'Api', // The name of the api that you specified when you `amplify add api`.
+    '/api/name',
+    {
+      body: {
+        name: 'test',
+      }
+    }
+  )
+
+  return {
+    props: {
+      name: res.name
+    }
+  }
+}
+
+const Home: NextPage = ({ name }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -20,6 +44,10 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.tsx</code>
+        </p>
+
+        <p>
+          name: {name}
         </p>
 
         <div className={styles.grid}>

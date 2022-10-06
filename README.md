@@ -218,3 +218,58 @@ https://docs.amplify.aws/start/getting-started/setup/q/integration/next/#install
 ```
 % npm install aws-amplify @aws-amplify/ui-react
 ```
+
+## Use API
+
+https://docs.amplify.aws/start/getting-started/data-model/q/integration/next/#api-with-incremental-static-site-generation-ssg
+
+Example of change:
+
+```diff
+--- a/pages/index.tsx
++++ b/pages/index.tsx
+@@ -3,7 +3,31 @@ import Head from 'next/head'
+ // import Image from 'next/image'
+ import styles from '../styles/Home.module.css'
+
+-const Home: NextPage = () => {
++import { Amplify, API, withSSRContext } from 'aws-amplify'
++import awsExports from '../aws-exports'
++
++Amplify.configure(awsExports)
++
++export async function getStaticProps() {
++  const SSR = withSSRContext()
++  const res = await SSR.API.post(
++    'Api', // The name of the api that you specified when you `amplify add api`.
++    '/api/name',
++    {
++      body: {
++        name: 'test',
++      }
++    }
++  )
++
++  return {
++    props: {
++      name: res.name
++    }
++  }
++}
++
++const Home: NextPage = ({ name }) => {
+   return (
+     <div className={styles.container}>
+       <Head>
+@@ -22,6 +46,10 @@ const Home: NextPage = () => {
+           <code className={styles.code}>pages/index.tsx</code>
+         </p>
+
++        <p>
++          name: {name}
++        </p>
++
+         <div className={styles.grid}>
+           <a href="https://nextjs.org/docs" className={styles.card}>
+             <h2>Documentation &rarr;</h2>
+```
